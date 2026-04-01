@@ -6,6 +6,9 @@ applications:
       build: |
         set -ex
         pip install -r requirements.txt
+        python manage.py collectstatic --noinput
+      deploy:
+        python manage.py migrate
 
     web:
       commands:
@@ -22,3 +25,5 @@ routes:
   "https://{default}/":
     type: upstream
     upstream: "app:http"
+
+
