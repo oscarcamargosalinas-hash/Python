@@ -127,20 +127,24 @@ LOGIN_REDIRECT_URL = 'learning_logs:index'
 LOGOUT_REDIRECT_URL = 'learning_logs:index'
 LOGIN_URL = 'accounts:login'
 
-# Platform.sh settings.
+# Platform.sh / Upsun settings.
 from platformshconfig import Config
+import os
 
 config = Config()
 if config.is_valid_platform():
-    ALLOWED_HOSTS.append('.platformsh.site')
+    # Esto permite CUALQUIER dominio dentro de platformsh/upsun
+    ALLOWED_HOSTS = ['*'] 
     DEBUG = False
 
     if config.appDir:
         STATIC_ROOT = Path(config.appDir) / 'static'
+    
     if config.projectEntropy:
         SECRET_KEY = config.projectEntropy
 
     if not config.in_build():
+        # Asegúrate de que 'database' coincida con el nombre en el YAML (relationships)
         db_settings = config.credentials('database')
         DATABASES = {
             'default': {
@@ -150,5 +154,5 @@ if config.is_valid_platform():
                 'PASSWORD': db_settings['password'],
                 'HOST': db_settings['host'],
                 'PORT': db_settings['port'],
-    },
-}
+            },
+        }
