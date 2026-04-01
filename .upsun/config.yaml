@@ -19,4 +19,6 @@ services:
     type: postgresql:18
 
 routes:
-  https://{default}/:
+  "https://{default}/":
+    type: upstream
+    upstream: "app:http"
