@@ -3,7 +3,7 @@ applications:
     type: python:3.13
 
     relationships:
-      database: "db:postgresql" # El nombre debe coincidir con el servicio abajo
+      database: "db:postgresql"
 
     mounts:
       'static':
@@ -24,7 +24,7 @@ applications:
       upstream:
         socket_family: unix
       commands:
-        # AQUÍ ESTABA EL ERROR: Debe ser test_project
+        # Usando el nombre real de tu proyecto que vimos en settings.py
         start: gunicorn -w 4 -b unix:$SOCKET test_project.wsgi:application
       
       locations:
@@ -36,9 +36,9 @@ applications:
           allow: true
 
 services:
-  db: # Nombre corto y claro
+  db:
     type: postgresql:15
-    disk: 1024
+    # ELIMINADO: La línea 'disk: 1024' ya no va aquí en Upsun.
 
 routes:
   "https://{default}/":
